@@ -55,90 +55,19 @@ public class SortTest {
 	/*
 	 * 3.直接插入排序
 	 * */
-	public static void insertionSort(int[] arr,int n) {
-		int temp;
-		for (int i = 1; i < arr.length; i++) {
-			temp = arr[i];//默认第一个数已排序正确，从第二个数开始比较
-			int j = i-1;
-			while(j>=0&&arr[j]>temp){//从已排序好的数组从后往前比较
-				arr[j+1] = arr[j];//如果已存在的数比待插入的数大，则往后挪一位
-				j--;//继续向前比较
-			}
-			arr[j+1] = temp;//当碰到比带插入数小的数时，在其后放入待插入的数
-		}
-	}
+
 
 	/*
 	 * 4.希尔排序（直接插入排序的优化）---递减增量
 	 * */
-	public static void shellSort(int[] arr,int n) {
-		for (int gap = n/2; gap >= 1; gap/=2) {
-			for (int i = gap; i < arr.length; i++) {
-				int temp = arr[i];
-				int j = i-gap;
-				while(j>=0&&temp<arr[j]){
-					arr[j+gap] = arr[j];
-					j-=gap;
-				}
-				if((j+gap)!=i){
-					arr[j+gap] = temp;
-				}
-//				if(temp<arr[j]){
-//					arr[i] = arr[j];
-//					arr[j] = temp;
-//				}
-			}
-		}
-	}
+
 
 	/*
 	 * 5.简单选择排序
 	 * */
-	public static void selectSort(int[] arr) {
-		for (int i = 0; i < arr.length; i++) { //以所在位置的数为基准
-			int temp = arr[i],k = i;
-			for (int j = i+1; j < arr.length; j++) {//向后遍历比较，找到最小的数存入所在位置
-				if(arr[i]>arr[j]){
-					arr[i] = arr[j];
-					k = j;
-				}
-			}
-			arr[k] = temp;
-		}
-	}
 
-	/*
-	 * 6.堆排序---(简单选择的优化)
-	 * */
-	public static void heapSort(int[] arr) {
-		//第一次初始化大根堆，从最后一个有子节点的根节点开始往上调整最大堆
-		for (int i = arr.length/2; i >= 0; i--) {
-			adjustHeap(arr,i,arr.length);
-		}
-		//从顶点开始往下调整大根堆
-		for (int i = arr.length-1; i > 0; i--) {
-			int temp = arr[0]; //最后一个叶子节点与根节点交换，使得最大的数在最后
-			arr[0] = arr[i];
-			arr[i] = temp;
 
-			adjustHeap(arr, 0, i);
-		}
-	}
-	public static void adjustHeap(int[] arr,int parent,int length) {
-		int temp = arr[parent];//基准数为父节点
-		for (int child = parent*2+1; child < length; child=child*2+1) {
-			if(child+1<length&&arr[child]<arr[child+1]){//判断左右叶子节点哪个最大
-				child++;
-			}
-			if(arr[child]>temp){//子节点大于右节点，则交换
-				arr[parent] = arr[child];
-				parent = child;
-			}
-			else
-				break;
-		}
-		arr[parent] = temp; //将原父节点的值放入当前子节点
-	}
+
 
 	/*
 	 * 7.二路归并排序---重点思想（分治合并）

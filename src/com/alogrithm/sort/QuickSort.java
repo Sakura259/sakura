@@ -4,6 +4,9 @@ import java.util.Random;
 
 /**
  * Created by Sakura on 2019/5/19.
+ * 2.快速排序：不稳定
+ * 时间复杂度（平均）：O（n*log2(n)）
+ * 空间复杂度：O（n*log2(n)）
  */
 public class QuickSort {
     public static void main(String[] args) {

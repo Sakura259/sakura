@@ -2,7 +2,9 @@ package com.alogrithm.sort;
 
 /**
  * Created by Sakura on 2019/5/19.
- * 冒泡排序
+ * 1.冒泡排序：稳定
+ * 时间复杂度（平均）：O（n方）
+ * 空间复杂度：O（1）
  */
 public class BubbleSort {
     public static void main(String[] args) {
