@@ -2,7 +2,7 @@ package com.alogrithm.sort;
 
 /**
  * Created by Sakura on 2019/5/19.
- * 选择排序：不稳定
+ * 5.选择排序：不稳定
  * 时间复杂度：O（n次方）
  * 空间复杂度：O（1）
  */

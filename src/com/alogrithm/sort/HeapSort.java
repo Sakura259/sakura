@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 /**
  * Created by Sakura on 2019/5/19.
- * 堆排序：利用堆结构实现的排序算法（不稳定）
+ * 6.堆排序：利用堆结构实现的排序算法（不稳定）
  * 时间复杂度（平均）：O（n*log2(n)）
- * 空间复杂度：O（n*log2(n)）
+ * 空间复杂度：O（1）
  */
 public class HeapSort {
     public static void main(String[] args) {
@@ -20,9 +20,8 @@ public class HeapSort {
     public static void heapSort(int[] arr) {
         //第一次初始化大根堆，从最后一个有子节点的根节点开始往上调整最大堆
         for (int i = arr.length/2-1; i >= 0; i--) {
-            adjustHeap(arr,i,arr.length);
+            adjustHeap(arr,i,arr.length);  //形成最大堆（用于升序）
         }
-        System.out.println(Arrays.toString(arr));
         //从顶点开始往下调整大根堆
         for (int i = arr.length-1; i > 0; i--) {
             int temp = arr[0]; //最后一个叶子节点与根节点交换，使得最大的数在最后
