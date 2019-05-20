@@ -2,7 +2,9 @@ package com.alogrithm.sort;
 
 /**
  * Created by Sakura on 2019/5/20.
- * 10.基数排序
+ * 10.基数排序（稳定）
+ * 时间复杂度：O（n*k）
+ * 空间复杂度：O（n+k）
  */
 public class RadixSort {
     public static void main(String[] args) {
@@ -10,6 +12,7 @@ public class RadixSort {
         RadixSort.radixSort(array,1000);
         SortTest.print(array);
     }
+    
     public static void radixSort(int[] arr,int d) {
         int n = 1,k = 0,length = arr.length;
         int[][] bucket = new int[10][length];//二位数组：第一个表示单个位0-9这10个桶，第二个表示相同位的数字有几个相同的

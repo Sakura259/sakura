@@ -23,6 +23,7 @@ public class BucketSort {
         }
         //桶的数量
         int bucketNum = (max-min)/arr.length+1;
+        System.out.println(bucketNum);
         ArrayList<ArrayList<Integer>> buckets = new ArrayList<>(bucketNum);
         for (int i = 0; i < bucketNum; i++) {
             buckets.add(new ArrayList<Integer>());
