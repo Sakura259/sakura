@@ -12,7 +12,7 @@ public class RadixSort {
         RadixSort.radixSort(array,1000);
         SortTest.print(array);
     }
-    
+
     public static void radixSort(int[] arr,int d) {
         int n = 1,k = 0,length = arr.length;
         int[][] bucket = new int[10][length];//二位数组：第一个表示单个位0-9这10个桶，第二个表示相同位的数字有几个相同的
