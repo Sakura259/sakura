@@ -15,7 +15,7 @@ public class AVLTreeTest {
             tree.insert(arr[i]);
         }
         tree.preOrder();
-        tree.getTreeHeight();
+        System.out.println(tree.getTreeHeight());
         tree.print();
     }
 }
