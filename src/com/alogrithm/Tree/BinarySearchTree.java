@@ -1,7 +1,5 @@
 package com.alogrithm.Tree;
 
-import com.sun.xml.internal.ws.policy.sourcemodel.ModelNode;
-
 import java.util.LinkedList;
 
 /**
@@ -28,7 +26,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
             this.rightChild = rightChild;
         }
     }
-
     /*
     *       3
     *   1       5
@@ -116,7 +113,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
             System.out.print(currentNode.key+" ");
         }
     }
-
     //非递归版本的后序遍历
     public void noRecursivePostOrder(){
         LinkedList<BSNode<T>> stack = new LinkedList<>();
@@ -145,6 +141,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public void postOrder(){
         postOrder(mRoot);
     }
+
     //查找键值
     private BSNode<T> search(BSNode<T> current,T key){
         if (current==null)
@@ -160,6 +157,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public BSNode<T> search(T key) {
         return search(mRoot, key);
     }
+
     //查找最大值
     private BSNode<T> findMax(BSNode<T> current){
         if (current==null)
@@ -175,6 +173,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
             return node.key;
         return null;
     }
+
     //查找最小值
     private BSNode<T> findMin(BSNode<T> current){
         if (current==null)
@@ -191,28 +190,29 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return null;
     }
 
-    //插入函数
+    //插入函数--需要完成连接两个端点：1.插入节点的父节点 2.插入节点上父节点左右子节点
     private void insert(BSNode<T> node){
         int cmp;
-        BSNode<T> current = mRoot;
-        BSNode<T> y = null;
+        BSNode<T> current = mRoot;   //当前节点
+        BSNode<T> parentNode = null;  //当前节点的父节点
         while (current!=null){
-            y = current;
-            cmp = node.key.compareTo(current.key);
-            if (cmp<0)
+            parentNode = current;
+            cmp = node.key.compareTo(current.key);  //比较当前节点与要插入节点的大小
+            if (cmp<0)   //新插入节点 < 当前节点  ---需要继续遍历当前节点的左子树
                 current = current.leftChild;
-            else
+            else  //新插入节点 >= 当前节点   --需要继续遍历当前节点的右子树
                 current = current.rightChild;
         }
-        node.parent =y;
-        if (y==null){
+        node.parent =parentNode;   //连接插入节点的父节点
+        //插入节点是什么节点或是父节点的左右子节点
+        if (parentNode==null){
             mRoot = node;
         }else {
-            cmp = node.key.compareTo(y.key);
+            cmp = node.key.compareTo(parentNode.key);
             if (cmp<0)
-                y.leftChild = node;
+                parentNode.leftChild = node;
             else
-                y.rightChild = node;
+                parentNode.rightChild = node;
         }
 
     }
@@ -224,14 +224,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     //删除节点
     private boolean delete(T key){
-        BSNode<T> current = mRoot;
-        BSNode<T> parentNode = mRoot;
-        boolean isLeftChild = false;
+        BSNode<T> current = mRoot;   //用于记录所要删除的节点
+        BSNode<T> parentNode = mRoot;  //用于记录所要删除节点的父节点
+        boolean isLeftChild = false;   //用于删除节点是否为其父节点的左子节点
+        //遍历节点，找到需要删除的节点，记录在current节点中
         while (current.key!=key){
             parentNode = current;
             int cmp = key.compareTo(current.key);
             if (cmp<0){
-                isLeftChild = true;
+                isLeftChild = true;  //记录是否为父节点的左子节点
                 current = current.leftChild;
             }else {
                 isLeftChild = false;
@@ -244,9 +245,9 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if (current.leftChild == null&&current.rightChild == null){
             if (current == mRoot)
                 mRoot = null;
-            else if (isLeftChild){
+            else if (isLeftChild){  //如果是左子节点，则父节点的左子节点为无
                 parentNode.leftChild = null;
-            }else
+            }else  //如果是右子节点，则父节点的右子节点为无
                 parentNode.rightChild = null;
             return true;
         }
@@ -268,9 +269,10 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }else parentNode.rightChild = current.leftChild;
             return true;
         }
-        //当前节点的左右子节点都存在，寻找该节点右子树的最小节点代替
+        //当前节点的左右子节点都存在，寻找该节点右子树的最小节点代替---需要连接三个端点
         else{
             BSNode<T> successor = getSuccessor(current);
+            //父节点与后继节点的连接
             if (current == mRoot)
                 successor = mRoot;
             else if (isLeftChild){
@@ -278,24 +280,28 @@ public class BinarySearchTree<T extends Comparable<T>> {
             }else{
                 parentNode.rightChild = successor;
             }
+            //后继结点与原删除节点左子树的连接
             successor.leftChild = current.leftChild;
             return true;
         }
     }
     //获得后继结点
     private BSNode<T> getSuccessor(BSNode<T> delNode){
-        BSNode<T> successorParent = delNode;
-        BSNode<T> successor = delNode;
-        BSNode<T> current = delNode.rightChild;
+        BSNode<T> successorParent = delNode;   //用于记录后继节点的父节点
+        BSNode<T> successor = delNode;   //用于记录后继节点
+        BSNode<T> current = delNode.rightChild;   //寻找删除节点以右孩子为根的子树的最小值
         //寻找以其右孩子为根的子树的最小节点
-        while (current!=null){
+        while (current!=null){   //只需要连接两个节点
             successorParent = successor;
             successor = current;
             current = current.leftChild;
         }
         //如果后继结点不是删除节点的右子结点，将删除结点替换为后继节点
-        if (successor!=delNode.rightChild){
-            successorParent.leftChild = successor.rightChild;
+        if (successor!=delNode.rightChild){  //需要连接三个节点
+            if (successor.rightChild!=null){
+                successorParent.leftChild = successor.rightChild;   //将后继节点的右子树转移给后继结点父节点的左子节点
+            }
+            //后继节点与删除节点的右子树的连接
             successor.rightChild = delNode.rightChild;
         }
         return successor;
@@ -303,6 +309,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public void remove(T key){
         delete(key);
     }
+
     //打印二叉查找树
     private void print(BSNode<T> current,T key,int direction){
         if (current!=null){
@@ -319,6 +326,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if (mRoot!=null)
             print(mRoot,mRoot.key,0);
     }
+
     //销毁二叉查找树
     private void destroy(BSNode<T> current) {
         if (current==null)
@@ -329,7 +337,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
             destroy(current.rightChild);
         current=null;
     }
-
     public void destroy() {
         destroy(mRoot);
         mRoot = null;
