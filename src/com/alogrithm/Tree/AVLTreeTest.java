@@ -1,5 +1,9 @@
 package com.alogrithm.Tree;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Sakura on 2019/5/23.
  */
@@ -11,11 +15,13 @@ public class AVLTreeTest {
 
         System.out.printf("== 依次添加: ");
         for(i=0; i<arr.length; i++) {
-//            System.out.printf("%d ", arr[i]);
             tree.insert(arr[i]);
         }
+        System.out.println("前序遍历");
         tree.preOrder();
-        System.out.println(tree.getTreeHeight());
+
+        System.out.println("树的高度："+tree.getTreeHeight());
+        System.out.println("输出树的详细信息：");
         tree.print();
     }
 }

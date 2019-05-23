@@ -1,9 +1,5 @@
 package com.alogrithm.Tree;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import javax.sound.midi.Soundbank;
-
 /**
  * Created by Sakura on 2019/5/22.
  * 树的高度：当前节点到可以遍历到的最下面的子节点+1
@@ -28,6 +24,7 @@ public class AVLTree<T extends Comparable<T>> {
             this.rightChild = rightChild;
         }
     }
+    //构造函数
     public AVLTree(){
         mRoot = null;
     }
@@ -41,6 +38,7 @@ public class AVLTree<T extends Comparable<T>> {
         return getTreeHeight(mRoot);
     }
 
+    //先序遍历
     private void preOrder(AVLTreeNode<T> tree) {
         if(tree != null) {
             System.out.print(tree.key+" ");
@@ -48,16 +46,40 @@ public class AVLTree<T extends Comparable<T>> {
             preOrder(tree.rightChild);
         }
     }
-
     public void preOrder() {
-        System.out.println(mRoot.key);
         preOrder(mRoot);
+    }
+
+    //中序遍历
+    private void inOrder(AVLTreeNode<T> currentNode){
+        if (currentNode!=null){
+            inOrder(currentNode.leftChild);
+            System.out.print(currentNode.key+" ");
+            inOrder(currentNode.rightChild);
+        }
+    }
+    public void inOrder(){
+        inOrder(mRoot);
+    }
+
+    //后序遍历
+    private void postOrder(AVLTreeNode<T> currentNode){
+        if (currentNode!=null){
+            postOrder(currentNode.leftChild);
+            postOrder(currentNode.rightChild);
+            System.out.print(currentNode.key+" ");
+        }
+    }
+    public void postOrder(){
+        postOrder(mRoot);
     }
 
     //比较两个数的大小
     private int max(int a,int b){
         return a > b ? a : b;
     }
+
+    //返回当前根节点的最小节点
     private AVLTreeNode<T> minimum(AVLTreeNode<T> current) {
         if (current == null)
             return null;
@@ -75,7 +97,7 @@ public class AVLTree<T extends Comparable<T>> {
     }
 
     /*
-     * 查找最大结点：返回tree为根结点的AVL树的最大结点。
+     * 查找最大结点：返回当前根结点的AVL树的最大结点。
      */
     private AVLTreeNode<T> maximum(AVLTreeNode<T> current) {
         if (current == null)
@@ -95,6 +117,7 @@ public class AVLTree<T extends Comparable<T>> {
 
     //LL旋转和LR旋转用于平衡左子树失衡的情况
     //RR旋转和RL旋转用于平衡右子树失衡的情况
+
     /*
     *           k1                       k2
     *        k2     k3               k4       k1
@@ -156,7 +179,17 @@ public class AVLTree<T extends Comparable<T>> {
         k1.rightChild = leftLeftRotation(k1.rightChild);
         return rightRightRoration(k1);
     }
-    //插入节点函数
+
+    /*
+    * 插入节点函数
+    * 1.当前根节点为空，才将要插入的数据封装成节点进行赋值，否则就在梭巡插入位置
+    * 2.元素比当前根节点小，插入左子树中
+    *   若插入后出现失衡情况：插入是左子树的左子节点：LL旋转
+    *                        插入是左子树的右子节点：LR旋转（先RR再LL）
+    * 3.原序比当前跟几点大，插入右子树中
+    *   若插入后出现失衡情况：插入是右子树的右子节点:RR旋转
+    *                        插入是右子树的左子节点：RL旋转（先LL再RR）
+    * */
     private AVLTreeNode<T> insert(AVLTreeNode<T> currentRoot,T key){
         if (currentRoot==null){  //判断当前根节点是否为空
             currentRoot = new AVLTreeNode<T>(key,null,null);
@@ -168,7 +201,7 @@ public class AVLTree<T extends Comparable<T>> {
             int cmp = key.compareTo(currentRoot.key);
             if (cmp<0){  //插入当前根节点的左子树中
                 currentRoot.leftChild = insert(currentRoot.leftChild,key);
-                //从插入的节点从下往上遍历，判断是否失去平衡
+                //从插入的节点从下往上遍历，判断是否失去平衡--由于插入在左子树中，应此失衡后用LL或LR旋转恢复
                 if (getTreeHeight(currentRoot.leftChild)-getTreeHeight(currentRoot.rightChild)==2){
                     if (key.compareTo(currentRoot.leftChild.key)<0)  //判断插入的节点在根节点的左子树的左子树中
                         currentRoot = leftLeftRotation(currentRoot);
@@ -176,12 +209,13 @@ public class AVLTree<T extends Comparable<T>> {
                 }
             }else if (cmp>0){  //插入当前根节点的右子树中
                 currentRoot.rightChild = insert(currentRoot.rightChild,key);
+                //从插入节点从下往上开始遍历，判断是否失衡---由于插入节点在右子树，因此造成时候后用RR或RL旋转恢复
                 if (getTreeHeight(currentRoot.rightChild)-getTreeHeight(currentRoot.leftChild)==2){
                     if (key.compareTo(currentRoot.rightChild.key)>0)  //判断插入节点在根节点的右子树的右子树中
                         currentRoot = rightRightRoration(currentRoot);
                     else currentRoot = rightLeftRoration(currentRoot);  //判断插入节点在根节点的右子树的左子树中
                 }
-            }else {
+            }else {//不能添加相同键值的元素
                 System.out.println("add node failed:'can not add the same key!'");
             }
         }
@@ -192,6 +226,8 @@ public class AVLTree<T extends Comparable<T>> {
     public void insert(T key){
         mRoot = insert(mRoot,key);
     }
+
+    //返回节点：搜索从根节点开始遍历符合键值的节点
     private AVLTreeNode<T> search(AVLTreeNode<T> current, T key) {
         if (current==null)
             return current;
@@ -209,14 +245,21 @@ public class AVLTree<T extends Comparable<T>> {
         return search(mRoot, key);
     }
 
-    //删除节点函数  currentRoot表示要删除的当前根节点
+    /*
+    * 删除节点函数  currentRoot表示要删除的当前根节点
+    * 1.先判断删除节点在左子树还是右子树
+    * 2.判断到当前节点是需要删除的节点后，该节点的子节点有两个还是一个或零个
+    * 3.该节点有两个子节点，判断左右子树的高度
+    *  左子树高，则寻找左子树中最大节点来代替
+    *  右子树高，则寻找右子树中最小节点来代替
+    * */
     private AVLTreeNode<T> remove(AVLTreeNode<T> currentRoot,AVLTreeNode<T> delNode){
         if (currentRoot==null)
             return null;
         int cmp = delNode.key.compareTo(currentRoot.key);
         if (cmp<0){  //要删除的节点在当前根节点的左子树
             currentRoot.leftChild = remove(currentRoot.leftChild,delNode);
-            //删除节点后，若AVL树失去平衡，因为删除节点在左子树，所以若失去平衡的话只可能是 右子树的高度-2 = 左子树的高度
+            //删除节点后，若AVL树失去平衡，，因为删除节点在左子树所以若失去平衡的话只可能是 右子树的高度-2 = 左子树的高度
             if (getTreeHeight(currentRoot.rightChild)-getTreeHeight(currentRoot.leftChild)==2){
                 AVLTreeNode<T> temp = currentRoot.rightChild;  //用于判断进行RR旋转还是RL旋转
                 if (getTreeHeight(temp.leftChild)>getTreeHeight(temp.rightChild))
@@ -260,6 +303,7 @@ public class AVLTree<T extends Comparable<T>> {
             mRoot = remove(mRoot,delNode);
         }
     }
+
     //打印AVL树
     private void print(AVLTreeNode<T> tree, T key, int direction) {
         if(tree != null) {
