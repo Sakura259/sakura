@@ -84,7 +84,7 @@ public class MinHeap {
     }
 
     // 销毁最小堆
-    protected void destroy() {
+    public void destroy() {
         minHeap.clear();
         minHeap = null;
     }

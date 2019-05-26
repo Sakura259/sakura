@@ -1,8 +1,5 @@
 package com.alogrithm.Tree.Huffman;
 
-import javax.swing.plaf.metal.MetalRootPaneUI;
-import java.util.*;
-
 /**
  * Created by Sakura on 2019/5/26.
  * 哈夫曼树（最优二叉树）：是一种优化判断的树结构
