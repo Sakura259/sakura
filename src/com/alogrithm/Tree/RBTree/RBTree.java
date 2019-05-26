@@ -1,4 +1,4 @@
-package com.alogrithm.Tree;
+package com.alogrithm.Tree.RBTree;
 
 import java.util.TreeMap;
 import java.util.logging.XMLFormatter;

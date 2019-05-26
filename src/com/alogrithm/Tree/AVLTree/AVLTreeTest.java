@@ -1,8 +1,4 @@
-package com.alogrithm.Tree;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+package com.alogrithm.Tree.AVLTree;
 
 /**
  * Created by Sakura on 2019/5/23.

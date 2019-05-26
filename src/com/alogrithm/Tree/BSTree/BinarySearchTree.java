@@ -1,4 +1,4 @@
-package com.alogrithm.Tree;
+package com.alogrithm.Tree.BSTree;
 
 import java.util.LinkedList;
 

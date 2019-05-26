@@ -1,4 +1,4 @@
-package com.alogrithm.Tree;
+package com.alogrithm.Tree.BSTree;
 
 /**
  * Created by Sakura on 2019/5/22.
